@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Expo TypeScript",
-    "slug": "example-expo-ts",
+    "name": "Detox 101",
+    "slug": "detox101",
     "privacy": "unlisted",
     "version": "1.0.0",
     "orientation": "portrait",
