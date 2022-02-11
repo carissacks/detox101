@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -15,7 +16,7 @@ import {
 } from '@react-navigation/native';
 
 import { NavigationProp, RouteProp, StackParamList } from './types/navigation';
-import { users } from './__mocked__/data';
+import { songs, users } from './__mocked__/data';
 
 function HomeScreen() {
   const { reset } = useNavigation<NavigationProp<'Home'>>();
@@ -28,13 +29,30 @@ function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome back, {name}</Text>
-      <Text style={styles.text}>You made it!</Text>
-      <Text style={styles.text}>Leave</Text>
-      <Text style={styles.text}>Now?</Text>
-      <Button title="Leave" onPress={onPressLeave} />
-    </View>
+    <FlatList
+      data={songs}
+      keyExtractor={(_, idx) => `songs-${idx}`}
+      renderItem={({ item }) => (
+        <View style={styles.item}>
+          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text>{item.singer}</Text>
+        </View>
+      )}
+      ListHeaderComponent={() => (
+        <>
+          <Text style={styles.title}>Welcome back, {name}</Text>
+          <Text style={styles.title}>Your Songs</Text>
+        </>
+      )}
+      ListFooterComponent={() => (
+        <>
+          <Text style={styles.text}>End of List</Text>
+          <Button title="Leave" onPress={onPressLeave} />
+        </>
+      )}
+      style={styles.songContainer}
+      contentContainerStyle={styles.songContentContainer}
+    />
   );
 }
 
@@ -125,17 +143,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 24,
+    paddingVertical: 24,
+  },
+  item: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    marginBottom: 12,
+    backgroundColor: 'white',
+  },
+  itemTitle: {
+    fontSize: 20,
+    paddingBottom: 4,
   },
   marginBottom: {
     marginBottom: 16,
+  },
+  songContainer: {
+    flexGrow: 1,
+    width: '100%',
+  },
+  songContentContainer: {
+    padding: 24,
+    backgroundColor: '#EDEDED',
   },
   title: {
     paddingBottom: 24,
     fontSize: 24,
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     paddingTop: 12,
     paddingBottom: 24,
   },
