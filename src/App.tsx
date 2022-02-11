@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  ScrollView,
+} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   NavigationContainer,
@@ -36,12 +43,11 @@ function LoginScreen() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = () => {
     if (name === '' || password === '') {
-      setError(
-        'Tell me who you are along with the secret code, so I can identify you.',
-      );
+      setError('Tell me who you are.');
       return;
     }
 
@@ -51,7 +57,11 @@ function LoginScreen() {
     );
     if (user) {
       setError(null);
-      reset({ routes: [{ name: 'Home', params: { name } }], index: 0 });
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        reset({ routes: [{ name: 'Home', params: { name } }], index: 0 });
+      }, 3000);
       return;
     }
 
@@ -59,22 +69,30 @@ function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hey, welcome back!</Text>
-      <TextInput
-        onChangeText={setName}
-        placeholder="who you - username"
-        style={[styles.textInput, styles.marginBottom]}
-      />
-      <TextInput
-        onChangeText={setPassword}
-        placeholder="credentials here"
-        secureTextEntry={true}
-        style={[styles.textInput, styles.marginBottom]}
-      />
-      {!!error && <Text style={styles.text}>{error}</Text>}
-      <Button title="Submit" onPress={onSubmit} />
-    </View>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Hey, welcome back!</Text>
+        <TextInput
+          onChangeText={setName}
+          placeholder="who you - username"
+          testID="username"
+          style={[styles.textInput, styles.marginBottom]}
+        />
+        <TextInput
+          onChangeText={setPassword}
+          placeholder="credentials here"
+          secureTextEntry={true}
+          testID="password"
+          style={[styles.textInput, styles.marginBottom]}
+        />
+        {!!error && <Text style={styles.text}>{error}</Text>}
+        {loading && <Text style={styles.text}>Loading...</Text>}
+        <Button title="Submit" onPress={onSubmit} />
+      </View>
+    </ScrollView>
   );
 }
 
