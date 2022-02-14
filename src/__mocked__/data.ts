@@ -16,7 +16,7 @@ export const songs = [
   { title: 'Thunderstruck', singer: 'AC/DC' },
   { title: 'Drunk', singer: 'Keshi' },
   { title: 'The Only Reason', singer: '5 SoS' },
-  { title: 'The Only Exception', singer: 'Paramote' },
+  { title: 'The Only Exception', singer: 'Paramore' },
   { title: 'Back in Black', singer: 'AC/DC' },
   { title: 'Be My Mistake', singer: '1975' },
 ];
