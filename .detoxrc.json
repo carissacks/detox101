@@ -7,7 +7,7 @@
       "name": "Detox101",
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Detox101.app",
-      "build": "xcodebuild -project ios/Detox101.xcodeproj -scheme Detox101 -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+      "build": "xcodebuild -workspace ios/Detox101.xcworkspace -scheme Detox101 -sdk iphonesimulator -derivedDataPath ios/build"
     },
     "android": {
       "type": "android.apk",
