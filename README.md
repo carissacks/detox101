@@ -2,29 +2,33 @@
 [Detox](https://github.com/wix/Detox) is a gray box end-to-end testing and automation framework for mobile apps.
 This PR helps to learn how to setup and use detox in simple project.
 
-`NOTE: This project is built on Expo`
+`NOTE: This project is built on Expo and use jest as the test runner`
 
 # About
 There are 4 branches in this repository. You can choose based on your need.
 1. [`master`](https://github.com/carissacks/detox101/tree/master)
-- Contains only the project, without detox. 
-- Expo managed flow
-- TODO: eject from expo, run `detox init`, config detox, setup android, make end-to-end test
+    - Contains only the project, without detox. 
+    - Expo managed flow
+    - TODO: eject from expo, run `detox init`, config detox, setup android, make end-to-end test
 2. [`setup`](https://github.com/carissacks/detox101/tree/setup)
-- Contains project with detox and jest-circus.
-- Bare workflow
-- Detox runs well in ios
-- TODO: setup android, make end-to-end test
+    - Contains project with detox and jest-circus.
+    - Bare workflow
+    - Detox runs well in ios
+    - TODO: setup android, make end-to-end test
 3. [`setup-android`](https://github.com/carissacks/detox101/tree/setup-android)
-- Contains project with detox and jest-circus.
-- Bare workflow.
-- Android detox setup is added.
-- Detox runs well in android and ios
-- TODO: make end-to-end test
+    - Contains project with detox and jest-circus.
+    - Bare workflow.
+    - Android detox setup is added.
+    - Detox runs well in android and ios
+    - TODO: make end-to-end test
 4. [`test`](https://github.com/carissacks/detox101/tree/test)
-- Contains project with detox and jest-circus
-- Detox runs well in android and ios
-- Test only passed on Android (intentional)
+    - Contains project with detox and jest-circus
+    - Detox runs well in android and ios
+    - Test only passed on Android (intentional)
+
+# App
+https://user-images.githubusercontent.com/46070698/154253596-c48bfa54-fafb-4a9b-8089-be183708b2af.mp4
+
 ---------
 
 # How to Run
@@ -59,6 +63,8 @@ brew install --cask adoptopenjdk/openjdk/adoptopenjdk8 // to install jdk 8
 export ANDROID_HOME=$HOME/Library/Android/sdk
 path=("$ANDROID_HOME/emulator" "$ANDROID_HOME/tools" "$ANDROID_HOME/tools/bin" "$ANDROID_HOME/platform-tools" "$path[@]")
 ```
+3. Open `Android Studio` and create new AVD (Android Virtual Device) if you haven't.
+- More options > AVD Manager > Create Virtual Device
 
 ## Clone the project
 - You can run the command below to clone the master branch
@@ -90,6 +96,28 @@ git checkout master
 - Run this command in `detox101` to install all packages needed in the project
 ```
 yarn
+```
+
+## Choose Your Device
+You can choose the type of devices you want to run the end-to-end tests with.
+- It is optional for the simulator, since we start with all types of devices
+- However it is mandatory for the emulator, because your avd name is possible different than mine.
+- Change the device type in `.detoxrc.json`
+```
+  "devices": {
+    "simulator": {
+      "type": "ios.simulator",
+      "device": {
+        "type": <iphone type>
+      }
+    },
+    "emulator": {
+      "type": "android.emulator",
+      "device": {
+        "avdName": <android type name>
+      }
+    }
+  },
 ```
 
 ## Run in IOS
@@ -138,5 +166,34 @@ detox test -c android
 
 ----
 
+# Let's Practice 
+They said practice makes perfect!
+You can check the full documentations [here](https://wix.github.io/Detox/docs/api/matchers) for all the matchers, actions, and what to expect.
+
+## First Case (in `test` branch)
+1. Login Scene
+    - Empty field: Show "Tell me who you are."
+    - Wrong credentials or unregistered username: Show "Sorry, we have never met before"
+    - Right username with right credentials (name: detox101, password: 123): Navigate to Home Scene
+2. Home Scene
+    - Show "Welcome back, detox101" 
+
+
+## Second Case
+1. Login Scene
+    - Right username with right credentials:
+      - Could be one of the followings -format: name/password
+      - john/doe, rex orange/sunflower, simple/plan
+    - Navigate to Home Scene
+2. Home Scene
+    - Show "Welcome back, {name}", depends on the username
+    - Find 'End of list'
+    - Sign out
+
+
+
+----
+
 # Notes
+- You need to re-run `detox build` after changing the project code, otherwise the changes won't be updated on your test app.
 - Check the PRs to know more about the code and feel free to ask questions :smile:
